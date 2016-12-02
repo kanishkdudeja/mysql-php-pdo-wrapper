@@ -22,7 +22,7 @@ class DBWrapper {
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         catch(PDOException $e) {
-            throw new Exception('Unable to connect to DB');
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -52,8 +52,7 @@ class DBWrapper {
     }
 
     //Function to get a parameuterized PDO Query String
-    public function getPDOParameuterizedSelectQuery($table, $fields = '*' ,  $conditionParams, $groupBy = null, $limit = '', $sort=null, $fetchStyle = PDO::FETCH_ASSOC, $isIterationEnabled = false)
-    {
+    public function getPDOParameuterizedSelectQuery($table, $fields = '*' ,  $conditionParams, $groupBy = null, $limit = '', $sort=null, $fetchStyle = PDO::FETCH_ASSOC, $isIterationEnabled = false) {
         $query = "SELECT $fields FROM $table";
 
         //Checking if any conditions are there for the 'Where' Clause
@@ -62,7 +61,7 @@ class DBWrapper {
             //Fetching and appending the names of parameters and their parameuterized names in the where clause
             //in the format "where id=:id and name=:name" etc
             $keys = array_keys($conditionParams);
-            for($i=0;$i<count($keys);$i++) {
+            for($i=0; $i<count($keys); $i++) {
                 $query.= $keys[$i];
                 $query.= ' = ';
                 $query.= ($i==count($keys)-1)? ':'.$keys[$i] : ':'.$keys[$i].' and ';
@@ -82,6 +81,7 @@ class DBWrapper {
         //Applying the limit clause parameter
         $query.= "$limit";
 
+        //checking if iteration needs to be enabled
         if($isIterationEnabled) {
             $stmt = $this->conn->prepare($query, [\PDO::ATTR_CURSOR => \PDO::CURSOR_SCROLL]);
         }
@@ -137,6 +137,7 @@ class DBWrapper {
         //Fetching and appending the names of parameters
         //in the format "insert into table(name,description,parent_id)
         $keys = array_keys($params);
+
         for($i=0; $i<count($keys); $i++) {
             $query.= ($i==count($keys)-1)? $keys[$i] : $keys[$i].',';
         }
@@ -144,6 +145,7 @@ class DBWrapper {
         //Fetching and appending the parameuterzied names of parameters
         //in the format "values(:name,:description,:parent_id)"
         $query.=") VALUES (";
+
         for($i=0; $i<count($keys); $i++) {
             $query.= ($i==count($keys)-1)? ':'.$keys[$i] : ':'.$keys[$i].',';
         }
@@ -171,6 +173,7 @@ class DBWrapper {
         //Fetching and appending the names of update parameters and their parameuterized names in the where clause
         //in the format "set id=:id, name=:name" etc
         $keys = array_keys($updateParams);
+
         for($i=0; $i<count($keys); $i++) {
             $query.= $keys[$i];
             $query.= ' = ';
@@ -243,34 +246,7 @@ class DBWrapper {
         return $stmt->rowCount();
     }
 
-    //Function to execute an update query(with joins for example) with manually binded paramters
-    public function manualBindUpdate($query, $params = Array(), $values = Array(), $paramDataTypes = Array())
-    {
-        $stmt = $this->conn->prepare($query);
-
-        //Binding the Update parameters to their values
-        for($i=0; $i<count($params); $i++) {
-            if($paramDataTypes[$i] == 'int') {
-                $stmt->bindValue(':'.$params[$i], $values[$i], PDO::PARAM_INT);
-            }
-            if($paramDataTypes[$i] == 'str') {
-                $stmt->bindValue(':'.$params[$i], $values[$i], PDO::PARAM_STR);
-            }
-            if($paramDataTypes[$i] == 'bool') {
-                $stmt->bindValue(':'.$params[$i], $values[$i], PDO::PARAM_BOOL);
-            }
-            if($paramDataTypes[$i] == 'null') {
-                $stmt->bindValue(':'.$params[$i], $values[$i], PDO::PARAM_NULL);
-            }
-        }
-
-        //Executing the prepared statement
-        $stmt->execute();
-
-        //Returning the number of rows affected
-        return $stmt->rowCount();
-    }
-
+    
     //Function to execute a select(can be used for joins) query with manually binded parameters
     public function manualBindSelect($query, $params = Array(), $values = Array(), $paramDataTypes = Array(), $fetchStyle = PDO::FETCH_ASSOC, $isIterationEnabled = false) {
         if($isIterationEnabled) {
@@ -309,6 +285,34 @@ class DBWrapper {
             //Returning the result object
             return $result;
         }
+    }
+
+    //Function to execute an update query(with joins for example) with manually binded paramters
+    public function manualBindUpdate($query, $params = Array(), $values = Array(), $paramDataTypes = Array())
+    {
+        $stmt = $this->conn->prepare($query);
+
+        //Binding the Update parameters to their values
+        for($i=0; $i<count($params); $i++) {
+            if($paramDataTypes[$i] == 'int') {
+                $stmt->bindValue(':'.$params[$i], $values[$i], PDO::PARAM_INT);
+            }
+            if($paramDataTypes[$i] == 'str') {
+                $stmt->bindValue(':'.$params[$i], $values[$i], PDO::PARAM_STR);
+            }
+            if($paramDataTypes[$i] == 'bool') {
+                $stmt->bindValue(':'.$params[$i], $values[$i], PDO::PARAM_BOOL);
+            }
+            if($paramDataTypes[$i] == 'null') {
+                $stmt->bindValue(':'.$params[$i], $values[$i], PDO::PARAM_NULL);
+            }
+        }
+
+        //Executing the prepared statement
+        $stmt->execute();
+
+        //Returning the number of rows affected
+        return $stmt->rowCount();
     }
 }
 ?>
