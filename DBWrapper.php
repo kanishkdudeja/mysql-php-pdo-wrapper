@@ -12,11 +12,11 @@ class DBWrapper {
         try {
             if($isNonBufferedQuery){
                 //Connecting to the database host and database using the credentials
-                $this->conn = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.'',DB_USER,DB_PASSWORD,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci",PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => false));
+                $this->conn = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.'', DB_USER, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => false));
             }
             else {
                 //Connecting to the database host and database using the credentials
-                $this->conn = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.'',DB_USER,DB_PASSWORD,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"));
+                $this->conn = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.'', DB_USER, DB_PASSWORD, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"));
             }
 
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -196,12 +196,12 @@ class DBWrapper {
         $stmt = $this->conn->prepare($query);
 
         //Binding the Update parameters to their values
-        for($i=0;$i<count($keys);$i++) {
+        for($i=0; $i<count($keys); $i++) {
             $stmt->bindParam(':'.$keys[$i], $updateParams[$keys[$i]]);
         }
 
         //Binding the Condition params to their values
-        for($i=0;$i<count($conditionKeys);$i++) {
+        for($i=0; $i<count($conditionKeys); $i++) {
             $stmt->bindParam(':D'.$conditionKeys[$i], $conditionParams[$conditionKeys[$i]]);
         }
 
