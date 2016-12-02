@@ -58,9 +58,11 @@ class DBWrapper {
         //Checking if any conditions are there for the 'Where' Clause
         if(count($conditionParams) > 0) {
             $query.= " WHERE ";
+
             //Fetching and appending the names of parameters and their parameuterized names in the where clause
             //in the format "where id=:id and name=:name" etc
             $keys = array_keys($conditionParams);
+
             for($i=0; $i<count($keys); $i++) {
                 $query.= $keys[$i];
                 $query.= ' = ';
@@ -246,7 +248,7 @@ class DBWrapper {
         return $stmt->rowCount();
     }
 
-    
+
     //Function to execute a select(can be used for joins) query with manually binded parameters
     public function manualBindSelect($query, $params = Array(), $values = Array(), $paramDataTypes = Array(), $fetchStyle = PDO::FETCH_ASSOC, $isIterationEnabled = false) {
         if($isIterationEnabled) {
@@ -255,7 +257,7 @@ class DBWrapper {
         else {
             $stmt = $this->conn->prepare($query);
         }
-        
+
         //Binding the Update parameters to their values
         for($i=0; $i<count($params); $i++) {
             if($paramDataTypes[$i] == 'int') {
