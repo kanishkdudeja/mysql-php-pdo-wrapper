@@ -290,8 +290,7 @@ class DBWrapper {
     }
 
     //Function to execute an update query(with joins for example) with manually binded paramters
-    public function manualBindUpdate($query, $params = Array(), $values = Array(), $paramDataTypes = Array())
-    {
+    public function manualBindUpdate($query, $params = Array(), $values = Array(), $paramDataTypes = Array()) {
         $stmt = $this->conn->prepare($query);
 
         //Binding the Update parameters to their values
@@ -317,4 +316,5 @@ class DBWrapper {
         return $stmt->rowCount();
     }
 }
+
 ?>
