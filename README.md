@@ -9,7 +9,11 @@ This PHP wrapper uses the [PHP PDO Library](http://php.net/manual/en/book.pdo.ph
 
 ### Sample usage
 
+#### Include the wrapper
+
+```
 require_once 'DBWrapper.php'; //this will only work if the file is in the same folder as the executed file. If not, put the relative path here
+```
 
 #### Connecting to the database
 
