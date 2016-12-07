@@ -4,9 +4,9 @@ This PHP wrapper uses the [PHP PDO Library](http://php.net/manual/en/book.pdo.ph
 
 ### How to use this library?
 
-1) Put your database configuration credentials in the file DBConfig.php
+* Put your database configuration credentials in the file DBConfig.php
 
-2) Include the DBWrapper.php file in your project, create an object of the DBWrapper class and start using it in your application.
+* Include the DBWrapper.php file in your project, create an object of the DBWrapper class and start using it in your application.
 
 ### Available functions
 
@@ -49,7 +49,7 @@ This PHP wrapper uses the [PHP PDO Library](http://php.net/manual/en/book.pdo.ph
 
 ### Some notes
 
-1) This wrapper uses the utf8mb4 encoding and the utf8mb4_unicode_ci collation for the database connection. You can change these if needed, in the constructor of DBWrapper class in DBWrapper.php
+* This wrapper uses the utf8mb4 encoding and the utf8mb4_unicode_ci collation for the database connection. You can change these if needed, in the constructor of DBWrapper class in DBWrapper.php
 
 ### Sample usage
 
@@ -71,4 +71,26 @@ catch(Exception $e) {
     //connecting to the database failed.
     //$e->getMessage() will contain the reason for the same
 }
+```
+
+#### Execute a SELECT query
+
+The following code will return number of users(by gender) who are active and who are located in Chicago.
+
+```
+    $conditionParamsArray = Array('city'=>'Chicago','is_active'=>1)
+    $result = $db->select('users', 'gender, count(*) as count', $conditionParamsArray, 'gender', '', 'gender asc');
+    
+    if(empty($result)) {
+        //no rows returned
+    }
+    else {
+        foreach($result as $row) {
+            echo 'Gender '.$row['gender'].': '.$row['count']."\n";
+        }
+    }
+    
+    This will output something like:
+    Gender Male: 2
+    Gender Female: 3
 ```
