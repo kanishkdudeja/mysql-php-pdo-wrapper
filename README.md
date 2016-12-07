@@ -29,7 +29,7 @@ This PHP wrapper uses the [PHP PDO Library](http://php.net/manual/en/book.pdo.ph
     * fields: This is an associative array used to denote the list of values for the fields used in the INSERT command. For example :- Array('city'=>'chicago', 'is_active'=>1) will translate to "INSERT INTO TABLENAME(city, is_active) VALUES('chicago',1)" in the SQL query.
     * insert ignore: A boolean denoting whether INSERT IGNORE needs to be used in place of the regular INSERT syntax. Default value is false.
     
-    This function returns 0 if the insert failed. If it returns a positive integer, the insert succeeded. If the table has an autoincremented field, then the newly inserted ID is returned. If it doesn't, then '1' is returned to signify 'true'.
+    This functions returns a positive integer, the insert succeeded. If the table has an autoincremented field, then the newly inserted ID is returned. If it doesn't, then '0' is returned to signify 'true'.
     
 * Update: This function is updating rows in the table via the regular SQL UPDATE command. It takes the following arguments:
 
@@ -145,7 +145,7 @@ The following code will delete rows from the 'users' table for users who live in
 $conditionParamsArray = Array('city'=>'Chicago');
 
 try {
-    $countRowsUpdated = $db->delete('users', $conditionParamsArray);
+    $countRowsDeleted = $db->delete('users', $conditionParamsArray);
 
     if($countRowsDeleted === 0) {
         //the query ran fine, but no rows were deleted

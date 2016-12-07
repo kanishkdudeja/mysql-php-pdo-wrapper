@@ -153,18 +153,23 @@ class DBWrapper {
         }
         $query.=")";
 
-        $stmt = $this->conn->prepare($query);
+        try {
+            $stmt = $this->conn->prepare($query);
 
-        //Binding the  parameters to their values
-        for($i=0; $i<count($keys); $i++) {
-            $stmt->bindParam(':'.$keys[$i], $params[$keys[$i]]);
+            //Binding the  parameters to their values
+            for($i=0; $i<count($keys); $i++) {
+                $stmt->bindParam(':'.$keys[$i], $params[$keys[$i]]);
+            }
+
+            //Executing the prepared statement
+            $stmt->execute();
+
+            //Returning the last inserted id
+            return $this->conn->lastInsertId();
         }
-
-        //Executing the prepared statement
-        $stmt->execute();
-
-        //Returning the last inserted id
-        return $this->conn->lastInsertId();
+        catch(Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     //Function to update a record in $table, set updated data as in $updateParams, for the records matching $conditionsParams
@@ -193,23 +198,28 @@ class DBWrapper {
             $query.= ($i==count($conditionKeys)-1)? ':D'.$conditionKeys[$i] : ':D'.$conditionKeys[$i].' and ';
         }
 
-        $stmt = $this->conn->prepare($query);
+        try {
+            $stmt = $this->conn->prepare($query);
 
-        //Binding the Update parameters to their values
-        for($i=0; $i<count($keys); $i++) {
-            $stmt->bindParam(':'.$keys[$i], $updateParams[$keys[$i]]);
+            //Binding the Update parameters to their values
+            for($i=0; $i<count($keys); $i++) {
+                $stmt->bindParam(':'.$keys[$i], $updateParams[$keys[$i]]);
+            }
+
+            //Binding the Condition params to their values
+            for($i=0; $i<count($conditionKeys); $i++) {
+                $stmt->bindParam(':D'.$conditionKeys[$i], $conditionParams[$conditionKeys[$i]]);
+            }
+
+            //Executing the prepared statement
+            $stmt->execute();
+
+            //Returning the number of rows affected
+            return $stmt->rowCount();
         }
-
-        //Binding the Condition params to their values
-        for($i=0; $i<count($conditionKeys); $i++) {
-            $stmt->bindParam(':D'.$conditionKeys[$i], $conditionParams[$conditionKeys[$i]]);
+        catch(Exception $e) {
+            throw new Exception($e->getMessage());
         }
-
-        //Executing the prepared statement
-        $stmt->execute();
-
-        //Returning the number of rows affected
-        return $stmt->rowCount();
     }
 
     //Function to delete a record from table $table which matches $conditionParams
@@ -232,20 +242,25 @@ class DBWrapper {
             }
         }
 
-        $stmt = $this->conn->prepare($query);
+        try {
+            $stmt = $this->conn->prepare($query);
 
-        if(count($conditionParams)>0) {
-            for($i=0; $i<count($keys); $i++) {
-                //Binding the query paramaters to their values
-                $stmt->bindParam(':'.$keys[$i], $conditionParams[$keys[$i]]);
+            if(count($conditionParams)>0) {
+                for($i=0; $i<count($keys); $i++) {
+                    //Binding the query paramaters to their values
+                    $stmt->bindParam(':'.$keys[$i], $conditionParams[$keys[$i]]);
+                }
             }
+
+            //Executing the prepared statement
+            $stmt->execute();
+
+            //Returning the number of rows affected
+            return $stmt->rowCount();
         }
-
-        //Executing the prepared statement
-        $stmt->execute();
-
-        //Returning the number of rows affected
-        return $stmt->rowCount();
+        catch(Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
 
