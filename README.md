@@ -96,3 +96,66 @@ This will output something like:
 Gender Female: 3
 Gender Male: 2
 ```
+
+#### Execute an INSERT query
+
+The following code will insert a row into the 'users' table
+
+```
+$insertParamsArray = Array('id' => 2, 'name'=>'John', 'gender'=>'Male', 'city'=>'Chicago', 'is_active'=> 1);
+
+try {
+    $lastInsertedID = $db->insert('users', $insertParamsArray);
+}
+catch(Exception $e) {
+    //oops. The insert query failed. Perhaps send this error message($e->getMessage()) to a logging service
+}
+
+```
+
+#### Execute an UPDATE query
+
+The following code will update rows(set is_active = 1) in the 'users' table for users who live in Chicago
+
+```
+$updateParamsArray = Array('is_active'=>1);
+$conditionParamsArray = Array('city'=>'Chicago');
+
+try {
+    $countRowsUpdated = $db->update('users', $updateParamsArray, $conditionParamsArray);
+
+    if($countRowsUpdated === 0) {
+        //the query ran fine, but no rows were updated
+    }
+    else {
+        //the query succeeded. $countRowsUpdated were updated.
+    }
+}
+catch(Exception $e) {
+    //oops. The update query failed. Perhaps send this error message($e->getMessage()) to a logging service
+}
+
+```
+
+#### Execute an UPDATE query
+
+The following code will delete rows from the 'users' table for users who live in Chicago
+
+```
+$conditionParamsArray = Array('city'=>'Chicago');
+
+try {
+    $countRowsUpdated = $db->delete('users', $conditionParamsArray);
+
+    if($countRowsDeleted === 0) {
+        //the query ran fine, but no rows were deleted
+    }
+    else {
+        //the query succeeded. $countRowsDeleted were deleted.
+    }
+}
+catch(Exception $e) {
+    //oops. The update query failed. Perhaps send this error message($e->getMessage()) to a logging service
+}
+
+```
