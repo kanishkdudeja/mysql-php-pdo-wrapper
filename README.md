@@ -12,7 +12,7 @@ This PHP wrapper uses the [PHP PDO Library](http://php.net/manual/en/book.pdo.ph
 
 1) Select: This function is used to get results via the regular SQL SELECT command. Please note that this can not be used queries using joins as of now. It takes the following arguments:
 
-a) table: String denoting the name of the table you want to query
+a) table: String denoting the name of the table you want to query.
 b) fields: Comma separated string for the fields you want in the result set. For example :- If you want to get id and name, you can pass this parameter as 'id, name'. If you want to get all the records in the table, you can use '*'. You can also use aggregation SQL functions like count(), sum(), max(), min() like 'count(*)'
 c) condition parameters: This is an associative array used to denote the list of condition parameters used for evaluating the WHERE condition in the SQL command. For example :- Array('city'=>'chicago', 'is_active'=>1) will translate to "where city = 'chicago' and is_active = 1) in the SQL query.
 d) group by: Comma separated string denoting the the fields you want to group the result by. For example, if you want to group the result set by the "city" field, you can pass this argument as "city". If you want to group the result set by the city and is_active field, you can pass this argument as "city, is_active"
