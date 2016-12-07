@@ -13,6 +13,7 @@ require_once 'DBWrapper.php'; //this will only work if the file is in the same f
 
 #### Connecting to the database
 
+```
 try {
 	$db = new DBWrapper();
 
@@ -22,3 +23,4 @@ catch(Exception $e) {
 	//connecting to the database failed.
 	//$e->getMessage() will contain the reason for the same
 }
+```
