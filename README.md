@@ -30,6 +30,15 @@ This PHP wrapper uses the [PHP PDO Library](http://php.net/manual/en/book.pdo.ph
     iii) insert ignore: A boolean denoting whether INSERT IGNORE needs to be used in place of the regular INSERT syntax. Default value is false.
     
     This function returns 0 if the insert failed. If it returns a positive integer, the insert succeeded. If the table has an autoincremented field, then the newly inserted ID is returned. If it doesn't, then '1' is returned to signify 'true'.
+    
+3) Update: This function is used rows in the table via the regular SQL UPDATE command. It takes the following arguments:
+
+    i) table: String denoting the name of the table you want to update the row in.
+    ii) fields: This is an associative array used to denote the list of updated values for the the rows. For example :- Array('city'=>'chicago', 'is_active'=>1) will translate to "UPDATE TABLENAME set 'city' = 'chicago', 'is_active' = 1" in the SQL query.
+    iii) condition parameters: This is an associative array used to denote the list of condition parameters used for evaluating the WHERE condition in the SQL UPDATE command. For example :- Array('city'=>'chicago', 'is_active'=>1) will translate to "where city = 'chicago' and is_active = 1) in the SQL query.
+    
+    This function returns the number of rows affected. Here, please note that 0 number of rows affected does not mean failure. If the query itself fails to run, then the boolean FALSE is returned.
+    
 
 ### Some notes
 
