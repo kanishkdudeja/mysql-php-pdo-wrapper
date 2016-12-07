@@ -5,7 +5,12 @@ This PHP wrapper uses the [PHP PDO Library](http://php.net/manual/en/book.pdo.ph
 ### How to use this library?
 
 1) Put your database configuration credentials in the file DBConfig.php
+
 2) Include the DBWrapper.php file in your project, create an object of the DBWrapper class and start using it in your application.
+
+### Some notes
+
+1) This wrapper uses the utf8mb4 encoding and the utf8mb4_unicode_ci collation for the database connection. You can change these if needed, in the constructor of DBWrapper class in DBWrapper.php
 
 ### Sample usage
 
