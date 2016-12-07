@@ -19,9 +19,17 @@ This PHP wrapper uses the [PHP PDO Library](http://php.net/manual/en/book.pdo.ph
     v) limit: String for controlling the number of records returned by the SQL query. This uses the LIMIT expression functionality in SQL. If you want to get first 5 records, pass this argument as "LIMIT 5"
     vi) sort by: Comma separated string denoting the fields you want to sort the result set by. This uses the standard ORDER BY functionality in SQL. In order to order the result set by id increasing, pass this parameter as "id asc". If you want to order the result set by 2 parameters, you can pass a comma separated string such as "name asc, id desc"
     vii) fetch style: A constant denoting the result fetch mode. Default value is PDO::FETCH_ASSOC. For a list of fetch modes and their meaning, you can consult [this link](http://php.net/manual/en/pdostatement.fetch.php).
-    viii) iteration: A boolean denoting whether the result set needs to be iterated. Default value is false. False means that the result set will be passed in one go to the calling script. True means that the PDO statement will be passed and the calling function will need to be use an iterator to traverse over the result set. 
+    viii) iteration: A boolean denoting whether the result set needs to be iterated. Default value is false. False means that the result set will be passed in one go to the calling script. True means that the PDO statement will be passed and the calling function will need to be use an iterator to traverse over the result set.
     
     The result set returned by this function depends upon the fetch mode used and if iteration is enabled or not. The default fetch mode(PDO::FETCH_ASSOC) will return the result set as a multi dimensional associative array. Each row in the array will correspond to a row in the result set. This is however the case when iteration is not enabled. In case iteration is enabled, a PDO Statement object is returned which needs to be traversed by some Iterator utility to fetch the rows one by one(This is useful for saving memory while fetching big result sets)
+    
+2) Insert: This function is used to insert a row into the table via the regular SQL INSERT command. It takes the following arguments:
+
+    i) table: String denoting the name of the table you want to insert the row into.
+    ii) fields: This is an associative array used to denote the list of values for the fields used in the INSERT command. For example :- Array('city'=>'chicago', 'is_active'=>1) will translate to "INSERT INTO TABLENAME(city, is_active) VALUES('chicago',1)" in the SQL query.
+    iii) insert ignore: A boolean denoting whether INSERT IGNORE needs to be used in place of the regular INSERT syntax. Default value is false.
+    
+    This function returns 0 if the insert failed. If it returns a positive integer, the insert succeeded. If the table has an autoincremented field, then the newly inserted ID is returned. If it doesn't, then '1' is returned to signify 'true'.
 
 ### Some notes
 
