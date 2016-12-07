@@ -137,7 +137,7 @@ catch(Exception $e) {
 
 ```
 
-#### Execute an UPDATE query
+#### Execute a DELETE query
 
 The following code will delete rows from the 'users' table for users who live in Chicago
 
