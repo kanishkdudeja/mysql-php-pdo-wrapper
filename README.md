@@ -78,19 +78,21 @@ catch(Exception $e) {
 The following code will return number of users(by gender) who are active and who are located in Chicago.
 
 ```
-    $conditionParamsArray = Array('city'=>'Chicago','is_active'=>1)
-    $result = $db->select('users', 'gender, count(*) as count', $conditionParamsArray, 'gender', '', 'gender asc');
-    
-    if(empty($result)) {
-        //no rows returned
+$conditionParamsArray = Array('city'=>'Chicago','is_active'=>1);
+
+$result = $db->select('users', 'gender, count(*) as count', $conditionParamsArray, 'gender', '', 'gender asc');
+
+if(empty($result)) {
+    //no rows returned
+}
+else {
+    foreach($result as $row) {
+        echo 'Gender '.$row['gender'].': '.$row['count']."\n";
     }
-    else {
-        foreach($result as $row) {
-            echo 'Gender '.$row['gender'].': '.$row['count']."\n";
-        }
-    }
-    
-    This will output something like:
-    Gender Male: 2
-    Gender Female: 3
+}
+
+This will output something like:
+
+Gender Female: 3
+Gender Male: 2
 ```
